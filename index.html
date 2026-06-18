@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Search Tool</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: 900px;
+        margin: 40px auto;
+        padding: 20px;
+        background: #f4f4f4;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    textarea {
+        width: 100%;
+        height: 250px;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        resize: vertical;
+    }
+
+    .controls {
+        display: flex;
+        gap: 10px;
+        margin: 15px 0;
+    }
+
+    input[type="text"] {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    button {
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+        background: #0078ff;
+        color: white;
+        border: none;
+        border-radius: 6px;
+    }
+
+    button:hover {
+        background: #005fcc;
+    }
+
+    #results {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        min-height: 100px;
+        border: 1px solid #ddd;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+    }
+
+    mark {
+        background: yellow;
+        padding: 2px;
+    }
+
+    .count {
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<h1>Word Search Website</h1>
+
+<textarea id="textInput" placeholder="Paste or type text here..."></textarea>
+
+<div class="controls">
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter a word or phrase to search"
+    >
+    <button onclick="searchWord()">Search</button>
+</div>
+
+<div id="results">
+    Search results will appear here.
+</div>
+
+<script>
+function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function searchWord() {
+    const text = document.getElementById('textInput').value;
+    const searchTerm = document.getElementById('searchInput').value.trim();
+    const results = document.getElementById('results');
+
+    if (!searchTerm) {
+        results.innerHTML = "Please enter a search term.";
+        return;
+    }
+
+    const regex = new RegExp(escapeRegExp(searchTerm), 'gi');
+    const matches = text.match(regex);
+    const count = matches ? matches.length : 0;
+
+    const highlighted = text.replace(
+        regex,
+        match => `<mark>${match}</mark>`
+    );
+
+    results.innerHTML = `
+        <div class="count">Matches found: ${count}</div>
+        <div>${highlighted || text}</div>
+    `;
+}
+</script>
+
+</body>
+</html>
